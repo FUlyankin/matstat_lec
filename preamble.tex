@@ -97,8 +97,11 @@
 % меняю цвет на синий
 \sectionfont{\color{titleblue}}
 \subsectionfont{\color{titleblue}}
+
+% кружочки у цифр в секциях
 \renewcommand{\thesection}{\arabic{section}}
 
+% https://ru.overleaf.com/learn/latex/Sections_and_chapters
 
 % выбрасываю нумерацию страниц и колонтитулы 
 %\pagestyle{empty}
@@ -233,6 +236,10 @@
  
 % выделение по тексту важных вещей
 \newcommand{\indef}[1]{\textbf{ \color{green} #1}} 
+
+% разные дополнения для картинок
+\usetikzlibrary{arrows.meta}
+\usepackage{varwidth}
 
 \usepackage[normalem]{ulem}  % для зачекивания текста
 

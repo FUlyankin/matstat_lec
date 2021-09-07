@@ -1,0 +1,46 @@
+%!TEX TS-program = xelatex
+\documentclass[12pt, a4paper, oneside]{article}
+
+% Можно вставить разную преамбулу
+\input{preamble}
+
+\title{
+\begin{center} 
+\includegraphics[width=0.99\textwidth]{logo.png}
+\end{center}
+
+Посиделка 1: схема статистики}
+\date{ } %\today}
+
+% Если делаешь конспект, вписывай своё имя прямо сюда!
+\author{Ульянкин Ппилиф \thanks{\url{https://github.com/FUlyankin/matstat\_lec}}}
+
+\begin{document} % Конец преамбулы, начало файла
+
+\maketitle
+
+\epigraph{Пафосная наркоманская цитата}{\textit{Автор}}
+
+В машинном обучении довольно часто приходится строить метрики качества разных моделей. Модели надо как-то сравнивать между собой. Делать это по точечным значениям метрик на тестовой выборке --- не самая лучшая идея. Результат сильно зависит от разбиения на трэйн и тест. 
+
+
+
+\section{Зачем мы учим тервер}
+
+\end{document}
+
+
+
+Для accuracy: 
+
+https://machinelearningmastery.com/confidence-intervals-for-machine-learning/
+
+тут полезные ссылки
+
+https://stats.stackexchange.com/questions/363382/confidence-interval-of-precision-recall-and-f1-score
+
+http://users.stat.ufl.edu/~aa/articles/agresti_coull_1998.pdf
+
+Текущий мой способ: https://stats.stackexchange.com/questions/132684/how-to-calculate-confidence-intervals-for-precision-recall-from-a-signal-dete
+
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.64.142&rep=rep1&type=pdf
