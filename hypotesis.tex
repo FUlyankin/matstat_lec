@@ -1,0 +1,128 @@
+%!TEX TS-program = xelatex
+\documentclass[12pt, a4paper, oneside]{article}
+
+% Можно вставить разную преамбулу
+\input{preamble}
+
+\title{
+\begin{center} 
+\includegraphics[width=0.99\textwidth]{logo.png}
+\end{center}
+Гипотеза о равенстве средних и доверительные интервалы}
+% Посиделка 4: распределение среднего}
+\date{ } %\today}
+
+\author{Ульянкин Ппилиф \thanks{\url{https://github.com/FUlyankin/matstat_lec}}}
+
+\begin{document} % Конец преамбулы, начало файла
+
+\maketitle
+
+% \epigraph{Чтобы забыть что-нибудь ненужное, надо сначала выучить что-нибудь ненужное.}{\textit{Кот Матроскин про матстат}}
+
+% В этой посиделке мы начнём строить статистику, основанную на средних. Мы примем на веру, что среднее имеет нормальное распределение, посчитаем его характеристики, построим доверительный интервал и проверим целую гипотезу.  
+
+Поговорим про мощность различных процедур. Мы с вами обсудили, что гипотезу о равенстве средних можно проверить с помощью следующей процедуры. 
+
+\subsection*{Процедура 1}
+
+\begin{enumerate}
+\item  Собираем выборки $X_1, \ldots, X_n$ и $Y_1, \ldots, Y_n$;
+\item  Находим значение статистики
+
+$$
+z_{obs} = \frac{\bar x - \bar y}{\sqrt{\frac{s_x^2}{n_x} + \frac{s_y^2}{n_y}}};
+$$
+
+\item Говорим, что по ЦПТ $z_{obs} \overset{asy}{\sim} N(0,1);$
+\item Находим критическое значение $z_{1 - \frac{\alpha}{2}}$;
+\item Если мы видим, что $|z_{obs}| <  z_{1 - \frac{\alpha}{2}}$, мы говорим, что гипотеза не отвергается. 
+\end{enumerate}
+
+Ту же саму гипотезу можно попробовать проверить с помощью другого алгоритма, основанного на доверительных интервалах.
+
+\newpage
+
+\subsection*{Процедура 2}
+
+\begin{enumerate}
+\item  Собираем выборки $X_1, \ldots, X_n$ и $Y_1, \ldots, Y_n$;
+\item  Находим $\bar x$ и $\bar y$;
+\item  Пользуясь ЦПТ и зная, что $\bar x \overset{asy}{\sim} N \left(\mu_1,\frac{s^2_x}{n_x} \right)$ и $\bar y \overset{asy}{\sim} N\left(\mu_2,\frac{s^2_y}{n_y}\right)$ строим для $\mu_1$ и $\mu_2$ доверительные интервалы;
+\item Если доверительные интервалы пересеклись, говорим, что гипотеза не отвергается. 
+\end{enumerate}
+
+Вроде бы вторая процедура выглядит довольно естественно, однако ей никто не пользуется. Дело в том, что для одинаковых ошибок первого рода, $\alpha$, ошибка второго рода, $\beta$, для процедуры, основанной на доверительных интервалах, окажется выше. Задание состоит в том, чтобы это увидеть.
+
+Для простоты будем дальше предполагать, что $\bar x > \bar y$. Также будем считать, что обе дисперсии известны и равны единице, $\sigma^2_x = \sigma^2_y = 1$. Объёмы выборок одинаковы, $n_x = n_y = n$. Альтернатива односторонняя, то есть наблюдаемое значение статистики нужно искать как $z_{1 - \alpha}$. 
+
+
+\subsection*{Решение}
+
+Гипотеза о равенстве средних не отвергается, если
+
+$$
+\frac{\bar{x} - \bar{y}}{\sqrt{\frac{\sigma^2_x}{n_x} + \frac{\sigma^2_y}{n_y}}} < z_{1-\alpha}.
+$$
+
+Упростим выражение
+
+$$
+\frac{\bar{x} - \bar{y}}{\sqrt{\frac{2}{n}}} < z_{1-\alpha}.
+$$
+
+Найдём ошибку второго рода
+
+\begin{multline*}
+\mathbb{P} \left( H_0 \mid H_a \right) = \mathbb{P} \left( \frac{\bar{x} - \bar{y}}{\sqrt{\frac{2}{n}}} < z_{1-\alpha} \mid \mu_1 \ne \mu_2 \right)  = \\ = \mathbb{P} \left( \frac{\bar{x} - \bar{y} - (\mu_1 - \mu_2)}{\sqrt{\frac{2}{n}}} < z_{1-\alpha} - \frac{\mu_1 - \mu_2}{\sqrt{\frac{2}{n}}} \mid \mu_1 \ne \mu_2 \right) = \mathbb{P} \left( \mN(0,1) < z_{1-\alpha} - \frac{\mu_1 - \mu_2}{\sqrt{\frac{2}{n}}} \right) = \\ = \Phi \left( z_{1-\alpha} - \frac{\mu_1 - \mu_2}{\sqrt{\frac{2}{n}}} \right).
+\end{multline*}
+
+
+% def power_1(n_obs, alpha=0.05, mu1=4, mu2=5, sigma=1):
+%     z_crit = stats.norm().ppf(1 - alpha)
+%     a = z_crit - (mu2 - mu1)/np.sqrt(2 * sigma/n_obs)
+%     return 1 - stats.norm().cdf(a)
+
+
+Построим доверительные интервалы для средних:
+
+$$
+\begin{aligned} 
+& \bar{x} \pm z_{1 - \alpha} \cdot \sqrt{ \frac{1}{n} } \\
+& \bar{y} \pm z_{1 - \alpha} \cdot \sqrt{ \frac{1}{n} }
+\end{aligned} 
+$$
+
+Если доверительные интервалы пересекаются, гипотеза не отвергается, то есть: 
+
+$$
+\begin{aligned} 
+& \bar{x} - z_{1 - \alpha} \cdot \sqrt{ \frac{1}{n} } < \bar{y} + z_{1 - \alpha} \cdot \sqrt{ \frac{1}{n} } \\
+& \bar{x} - \bar{y} < 2 \cdot z_{1 - \alpha} \cdot \sqrt{ \frac{1}{n} } \\
+& \frac{\bar{x} - \bar{y}}{  \sqrt{ \frac{1}{n} } }  < 2 \cdot z_{1 - \alpha} \\
+& \frac{\bar{x} - \bar{y}}{  \sqrt{ \frac{2}{n} } }  < \sqrt{2} \cdot z_{1 - \alpha} \\
+\end{aligned} 
+$$
+
+Напомню, что для простоты мы считаем, что $\bar x > \bar y$. Найдём ошибку второго рода
+
+\begin{multline*}
+\mathbb{P} \left( H_0 \mid H_a \right)  = \mathbb{P} \left( \frac{\bar{x} - \bar{y} - (\mu_1 - \mu_2)}{\sqrt{\frac{2}{n}}} < \sqrt{2} \cdot z_{1-\alpha} - \frac{\mu_1 - \mu_2}{\sqrt{\frac{2}{n}}} \mid \mu_1 \ne \mu_2 \right) = \\ = \mathbb{P} \left( \mN(0,1) < \sqrt{2} \cdot z_{1-\alpha} - \frac{\mu_1 - \mu_2}{\sqrt{\frac{2}{n}}} \mid \mu_1 \ne \mu_2 \right) = \Phi \left( \sqrt{2} \cdot  z_{1-\alpha} - \frac{\mu_1 - \mu_2}{\sqrt{\frac{2}{n}}} \right).
+\end{multline*}
+
+% def power_2(n_obs, alpha=0.05, mu1=4, mu2=5, sigma=1):
+%     z_crit = stats.norm().ppf(1 - alpha)
+%     a = np.sqrt(2)*z_crit - (mu2 - mu1)/np.sqrt(2 * sigma**2/n_obs)
+%     return 1 - stats.norm().cdf(a)
+
+Чем больше наблюдений есть в нашем распоряжении, тем больше мощность теста. Нарисуем функции, описывающие мощность в координатах число наблюдений, мощность. На картинке видно, что первая процедура стабильно выигрывает у второй. При бесконечном числе наблюдений разницы не будет, так как мы всегда сможем идеально отделить две альтернативы друг от друга. 
+
+\begin{center} 
+    \includegraphics[width=0.8\linewidth]{eqmeqn.png}
+\end{center} 
+
+
+
+
+
+\end{document}
