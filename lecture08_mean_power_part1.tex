@@ -180,32 +180,35 @@ $$
 \end{sol} 
 
 
-\section{Метод моментов и ЦПТ}
+% \begin{problem}{(Задача о Танках)}
+
+
+% \end{problem}
+% \begin{sol}
+
+% \end{sol} 
+
+\section{ЦПТ и асимптотические доверительные интервалы}
 
 Точечная оценка --- это хорошо. К сожалению, чаще всего нам этого мало. Всегда хочется понимать, насколько оценка получилась точной. Нам в этом помогают \indef{доверительные интервалы,} то есть промежутки, которые накрывают истинное значение параметра с высокой вероятностью. Построить доверительные интервалы нам помогает союзник, ЦПТ.
 
 \begin{theorem}{\textbf{Центральная Предельная Теорема (Прокопий Петрович Ляпунов)}}
 
 Пусть $X_1, \ldots, X_n$ попарно независимые и одинаково распределённые случайные величины с конечным вторым моментом, $0 < E(X_i^2) < \infty$, тогда при $n \to \infty$ имеет место сходимость по распределению: 
-
 \[
-\bar{X}_n \stackrel{d}{\longrightarrow} N \left(\E(X_i), \frac{\Var(X_i)}{n} \right)
+\bar{X}_n \stackrel{d}{\longrightarrow} \mN \left(\E(X_i), \frac{\Var(X_i)}{n} \right)
 \]
-
 Этот же факт можно переписать немного иначе
-
 \[
-\sqrt{n} \cdot [\bar{x} - \E(X_i)]  \stackrel{d}{\longrightarrow} N \left(0, \Var(X_i)\right)
+\sqrt{n} \cdot [\bar{x} - \E(X_i)]  \stackrel{d}{\longrightarrow} \mN \left(0, \Var(X_i)\right)
 \]
-
 или даже 
-
 \[
-\sqrt{n} \cdot \frac{\bar{x} - \E(X_i)}{\sqrt{\Var(X_i)}}  \stackrel{d}{\longrightarrow} N \left(0, 1\right).
+\sqrt{n} \cdot \frac{\bar{x} - \E(X_i)}{\sqrt{\Var(X_i)}}  \stackrel{d}{\longrightarrow} \mN \left(0, 1\right).
 \]
 \end{theorem}
-
 Если говорить простым языком, то при определённых условиях сумма достаточно большого числа случайных величин имеет распределение близкое к нормальному. \indef{Главное, чтобы случайные величины были похожи и не было такого, что одна резко выделяется на фоне~остальных.}
+
 
 \begin{problem}{(Шарик и фарш)}
 Величины $X_1$, \ldots, $X_n \iid U[0;a]$. Найдите для $a$ оценку методом моментов и постройте для неё доверительный интервал. У Шарика есть гипотеза, что вес упаковки не может превышать $100$ грамм. Формализуйте эту гипотезу и опишите процедуру её проверки. 
@@ -215,7 +218,7 @@ $$
 Мы нашли оценку метода моментов, оказалось что 
 \[ \hat{a} = 2 \cdot \bar{X}_{n}. \]
 
-В данном случае мы работаем с равномерным распределением, а значит $\Var(X_i) = \frac{a^2}{12}.$ Получается, что $\Var(\bar x) = \frac{a^2}{12 \cdot n}.$ Воспользовавшись ЦПТ мы можем выписать асимптотическое распределение среднего 
+В данном случае мы работаем с равномерным распределением, а значит $\Var(X_i) = \frac{a^2}{12}.$ Получается, что $\Var(\bar X_n) = \frac{a^2}{12 \cdot n}.$ Воспользовавшись ЦПТ мы можем выписать асимптотическое распределение среднего 
 
 \[\bar{X}_n \overset{\text{\textit{asy}}}{\sim} \mN \left(\frac{a}{2}, \frac{a^2}{12 \cdot n} \right).\] 
 
@@ -224,436 +227,65 @@ $$
 \[\hat{a}= 2 \bar{X}_{n} \overset{\text{\textit{asy}}}{\sim} \mN \left(a, \frac{a^2}{3 \cdot n} \right).\] 
 
 Математическим ожиданием нашей оценки является сам параметр. Это говорит о том, что оценка получилась несмещённой. Нам хочется понять, насколько оценка точная. Для этого нужно знать дисперсию. В ней фигурирует неизвестное значение $a$. Его смело можно заменить на оценку $\hat{a}$. Асимптотика от этого никак не испортится. Чуть позже мы это докажем. 
+\[
+\hat{a}= 2 \bar{X}_{n} \overset{\text{\textit{asy}}}{\sim} \mN \left(a, \frac{4 \bar{X}^2}{3 \cdot n} \right).
+\] 
 
-\[\hat{a}= 2 \bar{X}_{n} \overset{\text{\textit{asy}}}{\sim} \mN \left(a, \frac{4 \bar{X}^2}{3 \cdot n} \right).\] 
+Давайте запишем для случайной величины $\hat a$ интервал, в котором она лежит с вероятностью $0.95.$ По правилу двух сигм получаем
+\[
+\PP \left(a - 2 \cdot \sqrt{\frac{4 \bar{X}^2}{3 \cdot n}}  \le \hat a \le a + 2 \cdot \sqrt{\frac{4 \bar{X}^2}{3 \cdot n}} \right) = 0.95.
+\]
 
-Немного перепишем 
+Такой интервал для случайной величины $\hat a$ называется \indef{предиктивным интервалом.} Его границы фиксированы, а в центре находится случайная величина. Давайте разрешим неравенство относительно $a$. Вычтем из каждой части $a$ и домножим на $-1.$ Тогда мы получим, что
+\[
+\PP \left(\hat a - 2 \cdot \sqrt{\frac{4 \bar{X}^2}{3 \cdot n}}  \le a \le \hat a + 2 \cdot \sqrt{\frac{4 \bar{X}^2}{3 \cdot n}} \right) = 0.95.
+\]
 
-\[Z = \frac{ 2 \bar{X}_{n} - a}{\sqrt{\frac{4 \bar{X}^2}{3 \cdot n}} } \overset{\text{\textit{asy}}}{\sim} \mN \left(0, 1 \right).\] 
+Такой интервал называется \indef{доверительным интервалом.} Его границы --- случайные величины, а в середине стоит неизвестная константа, которую доверительный интервал накрывает с вероятностью $0.95$. Если мы соберём много-много выборок и построим по каждой доверительный интервал, он в $95\%$ ситуаций накроет $a$.
+
+Если доверительный интервал оказывается очень широким, значит наша оценка неточная. Обратите внимание, что мы используем для строительства доверительного интервала ЦПТ. Её предпосылки должны выполнятся для выборки. Если это не так, интервал будет некорректным.
+
+Давайте построим доверительный интервал, который будет покрывать неизвестный параметр с вероятностью $1 - \alpha.$ Эта вероятность называется \indef{уровнем доверия.} Величина $\alpha$ называется \indef{уровнем значимости.} Это тот же самый уровень значимости, о котором мы говорили в первых посиделках. 
+
+Давайте вычтем из $\hat a$ математическое ожидание и поделим разность на стандартное отклонение. Получившаяся случайная величина будет иметь стандартное нормальное распределение
+\[
+Z = \frac{ 2 \bar{X}_{n} - a}{\sqrt{\frac{4 \bar{X}^2}{3 \cdot n}} } \overset{\text{\textit{asy}}}{\sim} \mN \left(0, 1 \right).
+\] 
 
 Попробуем понять насколько точной получилась наша оценка. Зажмём случайную величину $Z$ между её квантилями так, чтобы 
 
+\[
+\PP \left( z_{1 - \frac{\alpha}{2}} \le Z \le z_{1 - \frac{\alpha}{2}} \right) = 1 - \alpha.
+\]
+
+\begin{center} 
+    \includegraphics[width=0.7\linewidth]{conf_int_asy.png}
+\end{center} 
+
+Выбирая $\alpha$ мы выбираем для случайной величины $Z$ с двух сторон засечки. Между ними с вероятностью $1 - \alpha$ лежит рассматриваемая случайная величина. Если разрешить неравенство относительно $a,$ мы получим доверительный интервал 
+
 $$
-\PP \left( z_{1 - \frac{\alpha}{2}} \le \frac{ 2 \bar{X}_{n} - a}{\sqrt{\frac{4 \bar{X}^2}{3 \cdot n}} } \le z_{1 - \frac{\alpha}{2}} \right) = 1 - \alpha.
+\PP\left(2 \bar{X}_{n}  - z_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{4 \bar{X}^2}{3 \cdot n}}  \le a \le 2 \bar{X}_{n}  + z_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{4 \bar{X}^2}{3 \cdot n}} \right) = 1 - \alpha.
 $$
 
-Такой интервал для случайной величины $Z$ называется \indef{предиктивным интервалом.} Его границы фиксированы, а в центре находится случайная величина. Давайте разрешим неравенство относительно $a$. Тогда мы получим, что
-
-% $$
-% \PP\left(2 \bar{X}_{n}  - z_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{4 \bar{X}^2}{3 \cdot n}}  \le a \le 2 \bar{X}_{n}  + z_{1 - \frac{\alpha}{2}} \cdot \sqrt{\frac{4 \bar{X}^2}{3 \cdot n}} \right) = 1 - \alpha.
-% $$
-
-% Такой интервал называется \indef{доверительным интервалом.} Его границы --- случайные величины, а в середине стоит неизвестная константа, которую доверительный интервал накрывает с вероятностью $1 - \alpha$. Если мы соберём много-много выборок и построим по каждой доверительный интервал для $a$, он в $\alpha$ ситуациях окажется за пределами доверительного интервала. Здесь $\alpha$ это уровень значимости. Тот же самый, о котором мы говорили в первой посиделке. 
-
-
-% Займёмся гипотезой шарика. Ему кажется, что вес упаковки не превышает $100$ грамм. Для начала \indef{проверим гипотезу о том, что вес упаковки не отличается от $100$ грамм}
-
-% \begin{equation*} 
-% \begin{aligned} 
-% & H_0: a = 100 \\
-% & H_a: a \ne 100.
-% \end{aligned} 
-% \end{equation*} 
-
-% Оценка $\hat a$ --- случайная величина. Расстояние $\hat a - 100$ тоже случайная величина. Если наша гипотеза верна, расстояние $\hat a - 100$ должно быть близко к нулю. 
-
-% \todo[inline]{Дописать оба варианта проверки гипотезы, сделать отсылки к 1 лекции.}
-
-
-
-% \pgfplotsset{
-%   myplot/.style={
-%     width = 12cm, height = 6cm,
-%     xlabel = $t$, ylabel = $f(t)$,
-%     samples = 75,
-%     domain = -5:5,
-%     xlabel style = {at = {(1,0)}, anchor = west},
-%     ylabel style = {rotate = -90, at = {(0, 1)}, anchor = south west},
-%     legend style = {draw = none, fill = none},
-%   }
-% }
-
-% \begin{tikzpicture}[>=stealth,
-%   every node/.style={rounded corners},
-%   declare function={
-%     gamma(\z)=
-%     (2.506628274631*sqrt(1/\z)+0.20888568*(1/\z)^(1.5)+
-%     0.00870357*(1/\z)^(2.5)-(174.2106599*(1/\z)^(3.5))/25920-
-%     (715.6423511*(1/\z)^(4.5))/1244160)*exp((-ln(1/\z)-1)*\z);
-%   },
-%   declare function={
-%     student(\x,\n)=
-%     gamma((\n+1)/2)/(sqrt(\n*pi)*
-%     gamma(\n/2))*((1+(\x*\x)/\n)^(-(\n+1)/2));
-%   }]
-
-%   \begin{axis}[myplot, smooth]
-
-%   \foreach \zValue/\al/\pos in {2.145/0.025/0.30} {
-%     \addplot[domain = -4:-\zValue, draw = none, fill = cyan, opacity = 0.5] {student(x, 14)} \closedcycle;
-%     \addplot[domain = \zValue:4, draw = none, fill = orange, opacity = 0.5] {student(x, 14)} \closedcycle;
-%     \edef\temp{\noexpand
-%       \path[<->, draw] (axis cs: -\zValue, 0) to[out = 90, in = 0]
-%         (axis cs: -\zValue + 0.2, \pos) node[left] {$-t_{\al} = -\zValue$};
-%     }
-%     \temp
-%     \edef\temp{\noexpand
-%       \path[<->, draw] (axis cs: \zValue, 0) to[out = 90, in = 180]
-%         (axis cs: \zValue - 0.2, \pos) node[right] {$t_{\al} = \zValue$};
-%     }
-%     \temp
-%   }
-
-%   \addplot[smooth, thick, domain = -4:4, color = gray] {student(x, 14)}
-%     node[pos = 0.54, pin = {right:$\nu = 15 - 1$}] {};
-
-%   \end{axis}
-% \end{tikzpicture}%
-
-
-
-
-
-
-
-
-
-
-
-
-
-% \pgfplotsset{
-%   myplot/.style={
-%     width = 12cm, height = 6cm,
-%     xlabel = $z$, ylabel = $f(z)$,
-%     samples = 75,
-%     xlabel style = {at = {(1,0)}, anchor = west},
-%     ylabel style = {rotate = -90, at = {(0, 1)}, anchor = south west},
-%     legend style = {draw = none, fill = none},
-%   }
-% }
-
-% \begin{tikzpicture}[>=stealth,
-%   every node/.style={rounded corners},
-%   declare function={
-%     normalpdf(\x,\mu,\sigma)=
-%     (2*3.1415*\sigma^2)^(-0.5)*exp(-(\x-\mu)^2/(2*\sigma^2));
-%   }]
-
-%   \begin{axis}[myplot, smooth]
-
-%   \foreach \zValue/\al/\pos in {1.645/0.05/0.25, 1.960/0.025/0.20, 2.576/0.005/0.15} {
-%     \addplot[domain = -4:-\zValue, draw = none, fill = cyan, opacity = 0.15] {normalpdf(x, 0, 1)} \closedcycle;
-%     \addplot[domain = \zValue:4, draw = none, fill = orange, opacity = 0.15] {normalpdf(x, 0, 1)} \closedcycle;
-%     \edef\temp{\noexpand
-%       \path[<->, draw] (axis cs: -\zValue, 0) to[out = 90, in = 0]
-%         (axis cs: -2, \pos) node[left] {$-z_{\al} = -\zValue$};
-%     }
-%     \temp
-%     \edef\temp{\noexpand
-%       \path[<->, draw] (axis cs: \zValue, 0) to[out = 90, in = 180]
-%         (axis cs: 2, \pos) node[right] {$z_{\al} = \zValue$};
-%     }
-%     \temp
-%   }
-
-%   \addplot[smooth, thick, domain = -4:4, color = gray] {normalpdf(x,0,1)};
-
-%   \end{axis}
-% \end{tikzpicture}%
-
-
-
-% \begin{tikzpicture}[
-%   >=stealth,
-%   declare function={
-%     gamma(\z)=
-%     (2.506628274631*sqrt(1/\z)+0.20888568*(1/\z)^(1.5)+
-%     0.00870357*(1/\z)^(2.5)-(174.2106599*(1/\z)^(3.5))/25920-
-%     (715.6423511*(1/\z)^(4.5))/1244160)*exp((-ln(1/\z)-1)*\z);
-%   },
-%   declare function={
-%     student(\x,\n)=
-%     gamma((\n+1)/2)/(sqrt(\n*pi)*
-%     gamma(\n/2))*((1+(\x*\x)/\n)^(-(\n+1)/2));
-%   },
-%   declare function={
-%     normalpdf(\x,\mu,\sigma)=
-%     (2*3.1415*\sigma^2)^(-0.5)*exp(-(\x-\mu)^2/(2*\sigma^2));
-%   }]
-
-%   \begin{axis}[
-%     width=8cm, height=5cm,
-%     samples=30,
-%     xlabel=$t$, ylabel=$f(t)$,
-%     xlabel style={at={(1,0)}, anchor=north west},
-%     ylabel style={rotate=-90, at={(0,1)}, anchor=south east},
-%     legend style={draw=none, fill=none},
-%     domain=-5:5, xmin=-5.5, xmax=5.5]
-
-%     %% Quantil para \nu=5 e \alpha=0.05
-%     \addplot[domain=2.015:5, draw=none, fill=darkgreen, samples=30]
-%     {student(x,5)} \closedcycle;
-
-%     \addplot[smooth, thick, samples=100] {student(x,5)}
-%     node[pos=0.55, anchor=mid west, xshift=2em,
-%     append after command={
-%       (\tikzlastnode.west) edge [thin, gray] +(-2em,0)}]
-%     {$\nu=5$};
-
-%     \path[<->, draw] (axis cs: 2.015, 0.0) to[out=90, in=-90]
-%     (axis description cs: 0.82, 0.3) node[above] {$t_{\alpha}=2.0150$};
-
-%   \end{axis}
-% \end{tikzpicture}
-
-
-
-
-% \pgfplotsset{
-%   myplot/.style = {
-%     width = 10cm, height = 5cm,
-%     samples = 75,
-%     ticks = none,
-%   }
-% } %
-
-% \begin{tikzpicture}[>=stealth,
-%   every node/.style={rounded corners},
-%   declare function={
-%     normalpdf(\x,\mu,\sigma)=
-%     (2*3.1415*\sigma^2)^(-0.5)*exp(-(\x-\mu)^2/(2*\sigma^2));
-%   }]
-
-%   \begin{scope}
-%     \begin{axis}[myplot, smooth]
-%       \def\zValue{1.645}
-%       \addplot[domain = -4:-\zValue, draw = none, fill = cyan, opacity = 0.75] {normalpdf(x, 0, 1)} \closedcycle;
-%       \addplot[domain = \zValue:4, draw = none, fill = orange, opacity = 0.75] {normalpdf(x, 0, 1)} \closedcycle;
-%       \addplot[smooth, thick, domain = -4:4, color = gray] {normalpdf(x,0,1)};
-%       \path[draw, o->] (axis cs: 2, 0.02) to[out = 90, in = 180] (axis cs: 3, 0.2) node[right] {$\alpha/2$};
-%       \path[draw, o->] (axis cs: -2, 0.02) to[out = 90, in = 0] (axis cs: -3, 0.2) node[left] {$\alpha/2$};
-%       \node at (axis cs: 0, 0.1) {$1 - \alpha$};
-%       \node[below right, align = left] at (axis description cs: 0.01, 0.97) {Bilateral\\ $H_0: \theta \neq \theta_0$};
-%     \end{axis}
-%   \end{scope}
-
-%   \begin{scope}[yshift = -3.75cm]
-%     \begin{axis}[myplot, smooth]
-%       \def\zValue{1.282}
-%       \addplot[domain = -4:-\zValue, draw = none, fill = cyan, opacity = 0.75] {normalpdf(x, 0, 1)} \closedcycle;
-%       \addplot[smooth, thick, domain = -4:4, color = gray] {normalpdf(x,0,1)};
-%       \path[draw, o->] (axis cs: -1.7, 0.03) to[out = 90, in = 0] (axis cs: -3, 0.2) node[left] {$\alpha$};
-%       \node at (axis cs: 0.25, 0.1) {$1 - \alpha$};
-%       \node[below right, align = left] at (axis description cs: 0.01, 0.97) {Unilateral {\`a} esqueda\\ $H_0: \theta < \theta_0$};
-%     \end{axis}
-%   \end{scope}
-
-%   \begin{scope}[yshift = -7.5cm]
-%     \begin{axis}[myplot, smooth]
-%       \def\zValue{1.282}
-%       \addplot[domain = \zValue:4, draw = none, fill = orange, opacity = 0.75] {normalpdf(x, 0, 1)} \closedcycle;
-%       \addplot[smooth, thick, domain = -4:4, color = gray] {normalpdf(x,0,1)};
-%       \path[draw, o->] (axis cs: 1.7, 0.03) to[out = 90, in = 180] (axis cs: 3, 0.2) node[right] {$\alpha$};
-%       \node at (axis cs: -0.25, 0.1) {$1 - \alpha$};
-%       \node[below right, align = left] at (axis description cs: 0.01, 0.97) {Unilateral {\`a} direita\\ $H_0: \theta > \theta_0$};
-%     \end{axis}
-%   \end{scope}
-
-% \end{tikzpicture}%------------------------------------------------------
-
-
-
-
-
-
-
+По аналогии мы можем построить доверительный интервал для любого параметра, оценка которого выражается через среднее. В следующих посиделках мы сделаем это для нескольких распределений. 
 \end{sol}
 
-% Когда оценка моментов в явном виде выражается через среднее, работать с ним довольно легко. Давайте посмотрим на задачу про бегемотиков. Там получилось, что $\hat{p} = \frac{1}{\bar{X}_n}.$ Здесь ЦПТ влоб использовать не получится. Зато мы можем воспользоваться её обобщением, \indef{дельта-методом.}
 
+\section{Метод моментов, ЦПТ и проверка гипотез}
 
-% \section{Дельта-метод}
+Займёмся гипотезой шарика. Ему кажется, что вес упаковки не превышает $100$ грамм. Для начала \indef{проверим гипотезу о том, что вес упаковки не отличается от $100$ грамм}
 
-% Нормальное распределение возникает, если суммируется большое количество независимых одинаково распределенных случайных величин. Однако оно возникает и в других ситуациях! Дельта-метод основан на том факте, что даже нелинейная функция от нормально распределенной случайной величины  иногда имеет распределение близкое к нормальному.
+\begin{equation*} 
+\begin{aligned} 
+& H_0: a = 100 \\
+& H_a: a \ne 100.
+\end{aligned} 
+\end{equation*} 
 
-% % \begin{theorem}{\textbf{Центральная Предельная Теорема (Прокопий Петрович Ляпунов)}}
+Оценка $\hat a$ --- случайная величина. Расстояние $\hat a - 100$ тоже случайная величина. Если наша гипотеза верна, расстояние $\hat a - 100$ должно быть близко к нулю. 
 
-% % Пусть $X_1, \ldots, X_n$ попарно независимые и одинаково распределённые случайные величины с конечным вторым моментом, $0 < E(X_i^2) < \infty$, а $g(t)$ дифференцируемая функция. Пусть $\E(X_i) = \mu, \Var(X_i) = \sigma^2,$ тогда при $n \to \infty$ имеет место сходимость по распределению: 
-
-% % \[
-% % \sqrt{n} (g(\bar X_n) - g(\mu)) \stackrel{d}{\longrightarrow} \mN(0, \frac{\sigma^2}{n} (g'(\mu))^2 ).
-% % \]
-
-% % Иными словами говоря, 
-
-% % \[
-% % g(\bar{X}_n) \overset{\text{\textit{asy}}}{\sim} \mN \left(g(\mu), \frac{\sigma^2}{n} \cdot (g'(\mu))^2 \right).\] 
-% % \end{theorem}
-
-% % Попробуем применить его на практике. 
-
-% % \begin{problem}{(Равномерное)}
-% % Пусть случайные величины $X_1, \ldots, X_{100} \iid U[2;8]$. Как будут распределены $\bar{x}$ и $\frac{1}{\bar{x}}$? 
-% % \end{problem} 
-
-% % \begin{sol}
-% % С $\bar{x}$ всё будет просто. Воспользуемся ЦПТ, по ней 
-
-% % $$
-% % \bar{x}\sim \mN \left( \E(X_i), \frac{\Var(X_i)}{n} \right).
-% % $$
-
-% % Для равномерного распределения $\E(X_i) = \frac{2 + 8}{2} = 5$, $\Var(X_i) = \frac{(8-2)^2}{12} = 3$.
-
-% % Получается, что среднее посчитанное по сотне наблюдений будет иметь распределение 
-
-% % $$
-% % \bar{x}_{100} \sim \mN \left( 5, \frac{3}{100} \right).
-% % $$
-
-% % Для поиска распределения $\frac{1}{\bar{x}}$ воспользуемся дельта-методом: 
-
-% % $$
-% % g(t) = \frac{1}{t} \qquad g'(t) = -\frac{1}{t^2} \qquad g(\mu) = \frac{1}{5} \qquad g'(\mu) = - \frac{1}{25}.
-% % $$
-
-% % Остаётся только подставить  найденные значения в формулу и получить, что 
-
-% % $$
-% % \frac{1}{\bar{x}_{100}} \sim \mN \left( \frac{1}{5}, \frac{3}{100} \cdot \left(-\frac{1}{25} \right)^2\right).
-% % $$
-% % \end{sol}
-
-
-
-
-
-
-
-% % \section*{Откуда берётся дельта-метод}
-
-% % Если функция $g(t)$ дифференцируема, то в окрестности точки $\mu$ функция $g(t)$ похожа на прямую, то есть 
-
-% % $$
-% % g(t) \approx g(\mu) + g'(\mu) \cdot (t - \mu).
-% % $$
-
-% % Об этом нам говорит математический анализ, в частности, разложение в ряд Тэйлора. 
-
-% % Линейное преобразование нормально распределенной случайной величины оставляет её нормально распределенной, если угловой коэффициент отличен от нуля, т.е. 
-
-% % $$
-% % g'(\mu) \neq 0.
-% % $$ 
-
-% % Если $X \sim \mN(\mu, \sigma^2)$ и  дисперсия $X$ мала, то $X$ практически всегда попадает в небольшую окрестность $\mu$, а в ней $f$ похожа на линейную функцию и 
-
-% % $$
-% % g(X) \approx N(\mu, \sigma^2 (g'(\mu))^2.
-% % $$ 
-
-% % \indef{Получаем практическую версию дельта-метода.} Если: 
-
-% % \begin{itemize}
-% % 	\item  $g(t)$ --- дифференциируема;
-% % 	\item  $g'(\mu) \neq 0$;
-% % 	\item $X \sim \mN(\mu,\sigma^2)$;
-% % 	\item дисперсия $\sigma^2$ мала;
-% % \end{itemize} 
-
-% % тогда 
-
-% % $$
-% % g(X) \sim \mN(g(\mu),\sigma^2 (g'(\mu))^2).
-% % $$
-
-
-% % ЗБЧ позволяет использовать средние в качестве оценок для различных параметров. ЦПТ подсказывает как среднее будет распределено. Однако на практике часто встречаются ситуации, когда оценка параметра --- это функция от среднего.  \indef{Дельта-метод ---} позволяет в такой ситуации понять как будет распределена оценка. Полученное распределение можно использовать для строительства доверительного интервала. 
-
-
-% % \section*{Дельта-метод на практике}
-
-
-
-% % \begin{problem}{(Пуассона)}
-% % Пусть $X_1, \ldots, X_n \iid \Pois(\lambda)$.   С помощью дельта-метода найдите как распределена оценка вероятности $\PP(X_i = 0)$.
-% % \end{problem} 
-
-% % \begin{sol}
-% % В качестве оценки для $\lambda$ будем использовать оценку метода моментов, $\bar{x}$.  Среднее по ЦПТ имеет асимптотически нормальное распределение
-
-% % $$
-% % \bar{x}\sim \mN \left(\lambda, \frac{\lambda}{n} \right).
-% % $$
-
-% % Вероятность того, что $X_i = k$ считается по формуле 
-
-% % $$
-% % \PP(X_i = k) = \frac{\lambda^k}{k!} \cdot e^{-\lambda},
-% % $$ 
-
-% % в частности 
-
-% % $$
-% % \PP(X_i = 0) = e^{-\lambda}.
-% % $$
-
-% % Для оценки последней, $e^{-\bar{x}}$ нам нужно найти распределение. Воспользуемся  дельта-методом:
-
-% % $$
-% % g(t) = e^{-t} \qquad g'(t) = -e^{-t}
-% % $$
-
-% % Подставим значения в формулу и получим, что 
-
-% % $$
-% % e^{-\bar{x}} \sim \mN \left( e^{-\lambda},  \frac{\lambda}{n} \cdot e^{-2 \cdot \lambda}  \right).
-% % $$
-
-% % В дисперсию можем подставить вместо $\lambda$ её оценку
-
-% % $$
-% % e^{-\bar{x}} \sim \mN \left( e^{-\lambda},  \frac{\bar{x}}{n} \cdot e^{-2 \cdot \bar{x}}  \right).
-% % $$
-
-% % Такое распределение мы сможем использовать для строительства доверительных интервалов и дальнейшего анализа.
-% % \end{sol}
-
-
-% % \section*{Дельта-метод в теории}
-
-% % Естественно, строгая формулировка идеи <<дисперсия $\sigma^2$ мала>> использует понятие предела и последовательностей случайных величин.
-
-% % Если:  $g(t)$ --- дифференцируема, $g'(\mu)\neq 0$, и последовательность случайных величин $X_1, X_2, \ldots, X_n, \ldots $ удовлетворяет условию:
-
-% % \[
-% % \sqrt{n} (X_n - \mu) \overset{d}{\to}  \mN(0,\sigma^2),
-% % \]
-
-% % тогда последовательность $g(X_n)$ удовлетворяет условию:
-
-% % \[
-% % \sqrt{n} (g(X_n) - g(\mu)) \overset{d}{\to} \mN(0,\sigma^2 (g'(\mu))^2 )
-% % \]
-
-
-
-
-% % \subsection{Одномерный} 
-
-% % \subsection{Многомерный} 
-
-% % \section{Обобщённый метод моментов} 
-
-% % \section{Средние не панацея}
-
-% % Тут о важности предпосылок и тп на примере задачи про Киллера
-
-
-% % \section*{Почиташки} 
-
-% % \todo[inline]{Сюда список литературы к лекции}
+\todo[inline]{Дописать оба варианта проверки гипотезы, сделать отсылки к 1 лекции.}
 
 
 \end{document}
